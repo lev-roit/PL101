@@ -1,0 +1,16 @@
+start
+    = first:expression rest:expression* ws* {return [first].concat(rest);}
+
+expression
+    = ws* "(" ws* list:expression* ws* ")" {return list;}
+    / ws* single:atom {return single;}
+    / ws* "'" q_expr:expression {return ["qoute", q_expr];}
+
+atom
+    = chars:validchar+ {return chars.join("");}
+
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+ws
+    = [ \t\n\r]
