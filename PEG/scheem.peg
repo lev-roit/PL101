@@ -8,11 +8,12 @@ expression
     = "(" list:clean_expr* ")" {return list;}
     / single:atom {return single;}
     / "'" q_expr:clean_expr {return ["qoute", q_expr];}
-//    / comment rest:clean_expr {return rest;}
-    / comment {return [];}
+    / comment rest:clean_expr {return rest;}
+    / comment {return ["//"];}
 
 comment
     = ";;" [^\n\r]*
+
 atom
     = chars:validchar+ { return chars.join(""); }
 
