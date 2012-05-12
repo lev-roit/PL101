@@ -5,6 +5,10 @@ expression
     = ws* "(" ws* list:expression* ws* ")" {return list;}
     / ws* single:atom {return single;}
     / ws* "'" q_expr:expression {return ["qoute", q_expr];}
+    / ws* comment rest:expression ? {return (rest) ? rest : ["//"];}
+
+comment
+    = ";;" [^\n\r]*
 
 atom
     = chars:validchar+ {return chars.join("");}
