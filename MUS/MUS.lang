@@ -1,0 +1,11 @@
+note     = [a-g][1-8] integer
+pause    = [p] integer
+single   = ws* (note | pause) ws*
+sequence = "seq" "{" mus_expr+ "}"
+parallel = "par" "{" mus_expr mus_expr "}"
+repeat   = "rep" integer {mus_expr}
+
+mus_expr = single | sequence | parallel | repeat
+
+integer  = ws* "["ws* [0-9]+ ws*"]" ws*
+

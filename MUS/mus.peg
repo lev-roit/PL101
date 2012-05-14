@@ -1,0 +1,55 @@
+start
+    = clean_mus_expr
+
+clean_mus_expr
+    = ws* expr:mus_expr ws* {return expr;}
+
+mus_expr
+    = seq:sequence {return seq;}
+    / one:single   {return one;}
+    / par:parallel {return par;}
+    / rep:repeat   {return rep;}
+
+note
+    = p:[a-g] o:[1-8] d:integer
+          {return {tag: 'note', pitch: p + o, dur: d};}
+
+pause
+    = "p" d:integer {return {tag: 'rest', dur: d};}
+
+single
+    = note
+    / pause
+
+sequence
+    = "seq" ws* "{" l:clean_mus_expr r:rest_seq "}"
+          {return {tag: 'seq', left: l, right: r};}
+
+rest_seq
+    = l:clean_mus_expr r:rest_seq 
+          {return {tag: 'seq', left: l, right: r};}
+    / l:clean_mus_expr {return l;}
+
+parallel
+    = "par" ws* "{" l:clean_mus_expr r:clean_mus_expr "}"
+          {return {tag: 'par', left: l, right: r};}
+
+repeat
+    = "rep" cnt:integer "{" expr:clean_mus_expr "}"
+          {return {tag: 'repeat', section: expr, count: cnt};}
+
+comment
+    = ";;" [^\n\r]*
+
+ws
+    = comment
+    / [ \t\n\r\f\v]
+
+decimal
+    = "0" { return 0;}
+    / first:[1-9] rest:[0-9]* {return parseInt(first + rest.join(""));}
+
+
+integer
+    = ws* "[" ws* num:decimal ws* "]" ws* {return num;} 
+
