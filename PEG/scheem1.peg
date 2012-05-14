@@ -5,7 +5,6 @@ expression
     = ws* "(" ws* list:expression* ws* ")" {return list;}
     / ws* single:atom {return single;}
     / ws* "'" q_expr:expression {return ["qoute", q_expr];}
-    / ws* comment rest:expression ? {return (rest) ? rest : ["//"];}
 
 comment
     = ";;" [^\n\r]*
@@ -17,4 +16,5 @@ validchar
     = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
 
 ws
-    = [ \t\n\r]
+    = comment
+    / [ \t\n\r\f\v]

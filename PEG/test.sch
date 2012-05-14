@@ -1,8 +1,8 @@
 ;; Factorial function
 (define factorial           ;; factorial function 'string1' %% ## "string2"
     (lambda (n)
-        (if (= n 0) 1
-            (* n (factorial (- n 1))))))
+        (if (= n 0) 1 (     ;; comm
+             * n (factorial (- n 1))))))
 
 (define factorial1
     (lambda (n)

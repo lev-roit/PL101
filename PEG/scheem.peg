@@ -8,7 +8,6 @@ expression
     = "(" list:clean_expr* ")" {return list;}
     / single:atom {return single;}
     / "'" q_expr:clean_expr {return ["qoute", q_expr];}
-    / comment rest:clean_expr  ? {return (rest) ? rest : ["//"];}
 
 comment
     = ";;" [^\n\r]*
@@ -20,4 +19,5 @@ validchar
     = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
 
 ws
-    = [ \t\n\r]
+    = comment
+    / [ \t\n\r\f\v]
