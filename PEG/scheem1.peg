@@ -1,19 +1,26 @@
 start
-    = first:expression rest:expression* ws* {return [first].concat(rest);}
+    = first:expression rest:expression* ws* {return (rest[0]) ? [first].concat(rest) : first;}
 
 expression
     = ws* "(" ws* list:expression* ws* ")" {return list;}
     / ws* single:atom {return single;}
-    / ws* "'" q_expr:expression {return ["qoute", q_expr];}
-
-comment
-    = ";;" [^\n\r]*
+    / ws* "'" q_expr:expression {return ["quote", q_expr];}
 
 atom
-    = chars:validchar+ {return chars.join("");}
+    = digs:digits* chars:validchar+ {return digs.concat(chars).join("");}
+    / number
+
+number
+    = digs:digits+  {return parseInt(digs.join(""), 10);}
 
 validchar
     = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+digits
+    = [0-9]
+
+comment
+    = ";;" [^\n\r]*
 
 ws
     = comment

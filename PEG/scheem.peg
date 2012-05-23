@@ -1,5 +1,5 @@
 start
-    = first:clean_expr rest:clean_expr* {return [first].concat(rest);}
+    = first:clean_expr rest:clean_expr* {return (rest[0]) ? [first].concat(rest) : first;}
 
 clean_expr
     = ws* exp:expression ws* {return exp;}
@@ -9,15 +9,23 @@ expression
     / single:atom {return single;}
     / "'" q_expr:clean_expr {return ["qoute", q_expr];}
 
-comment
-    = ";;" [^\n\r]*
-
 atom
-    = chars:validchar+ { return chars.join(""); }
+    = digs:digits* chars:validchar+ {return digs.concat(chars).join("");}
+    / number
+
+number
+    = digs:digits+ {return parseInt(digs.join(""), 10);}
+
+digits
+    = [0-9]
 
 validchar
-    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+    = [0-9a-zA-Z_?!+\-=<>$%^&*/.]
+
+comment
+    = ";;" [^\n\r]*
 
 ws
     = comment
     / [ \t\n\r\f\v]
+    
