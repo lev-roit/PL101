@@ -7,7 +7,7 @@ clean_expr
 expression
     = "(" list:clean_expr* ")" {return list;}
     / single:atom {return single;}
-    / "'" q_expr:clean_expr {return ["qoute", q_expr];}
+    / "'" q_expr:clean_expr {return ["quote", q_expr];}
 
 atom
     = digs:digits* chars:validchar+ {return digs.concat(chars).join("");}
