@@ -1,0 +1,76 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tortoise Live Demo</title>
+  <script src=
+    "http://nathansuniversity.com/js/jquery-1.7.1.min.js">
+  </script>
+  <script src=
+    "http://nathansuniversity.com/js/raphael-min.js">
+  </script>
+  <script src="../tortoise.js"></script>
+  <script src="../tort_parser.js"></script>
+  <script src="../tort_graph.js"></script>
+</head>
+<body>
+
+<textarea id="input" style="width:700px; height:300px;">
+forward(100);
+</textarea>
+
+<input id="submitbutton" type="button" value="Run" />
+
+<div id="console" style="width:700px; height:100px; border: solid 1px;"></div>
+
+<div id="turtlecanvas" style="width:700px; height:600px; background-color: #eee;"></div>
+
+<script>
+
+// Utility function to log messages
+var log_console = function(msg) {
+    $('#console').append('<p>' + msg + '</p>');
+};
+
+// After page load
+$(function() {
+    var myTurtle = new Turtle("turtlecanvas");
+    var env = {};
+    add_binding(env, 'forward', function(d) { myTurtle.forward(d); });
+    add_binding(env, 'right', function(a) { myTurtle.right(a); });
+    add_binding(env, 'left', function(a) { myTurtle.left(a); });
+    add_binding(env, 'home', function() { myTurtle.home(); });
+    add_binding(env, 'penup', function() { myTurtle.penup(); });
+    add_binding(env, 'pendown', function() { myTurtle.pendown(); });
+    add_binding(env, 'setopac', function(o) { myTurtle.setOpacity(o); });
+    add_binding(env, 'setwidth', function(w) { myTurtle.setWidth(w); });
+    add_binding(env, 'setcolor', function(r, g, b) { myTurtle.setColor(r, g, b); });
+    add_binding(env, 'moveto', function(x, y) { myTurtle.setPosition(x, y); });
+    add_binding(env, 'setangle', function(a) { myTurtle.setHeading(a); });
+    add_binding(env, 'lineto', function(x, y) { myTurtle.drawTo(x, y); });
+    add_binding(env, 'circle', function(r) { myTurtle.circle(r); });
+    add_binding(env, 'cos', function(a) { return myTurtle.cos(a); });
+    add_binding(env, 'sin', function(a) { return myTurtle.sin(a); });
+    add_binding(env, 'rect', function(w, h, r) { myTurtle.rect(w, h, r); });
+
+    $('#submitbutton').click(function() {
+        var user_text = $('#input').val();
+        $('#console').html('');
+        myTurtle.clear(90);
+        try {
+            var parsed = TORTOISE.parse(user_text);
+            try {
+                var result = evalStatements(parsed, env);
+            }
+            catch(e) {
+                log_console('Eval Error: ' + e);
+            }
+        }
+        catch(e) {
+            log_console('Parse Error: ' + e);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

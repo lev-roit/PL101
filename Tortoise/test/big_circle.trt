@@ -1,0 +1,70 @@
+define circle (x) {
+    var step;
+    step := 2 * 3.14 * x / 360;
+    right(180);
+    forward(step/2);
+    right(180);
+    repeat(360) {
+        forward(step);
+        right(1);
+    }
+    forward(step/2);
+}
+
+define x_y (x) {
+    right(90);
+    forward(x * 2);
+    right(180);
+    forward(x);
+    right(90);
+    forward(x);
+    right(180);
+    forward(x * 2);
+    right(180);
+    forward(x);
+}
+
+define spiral(size, max) {
+    if (size < max) {
+        repeat (15) {
+            forward(size/15);
+            right(1);
+        }
+        var newsize;
+        newsize := size * 1.02;
+        spiral(newsize, max);
+    }
+}
+
+define spiral(size, max) {
+    var i;
+    var j;
+    var newsize;
+
+    i := max / 1.02 / size;
+    j := 1;
+    newsize := size;
+    repeat (i) {
+        newsize := newsize * 1.02;
+        if (newsize < max) {
+            j := j + 1;
+        }
+    }
+        
+    repeat (j) {
+        repeat (3) {
+            forward(size/3);
+            right(5);
+        }
+        size := size * 1.02;
+    }
+}
+
+spiral(5, 30);
+
+spiral(5);
+left(90);
+forward(100);
+right(90);
+circle(100);
+x_y(100);

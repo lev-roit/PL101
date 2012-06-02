@@ -1,0 +1,95 @@
+define seg_circle(r, s) {
+    var step;
+    step := 2.0 * r * sin(s * 0.5);
+    right(s/2);
+    var cnt := 360 / s;
+    while (cnt > 0) {
+        forward(step);
+        right(s);
+        cnt := cnt - 1;
+    }
+    left(s/2);
+}
+
+define circle1(r, s) {
+    penup();
+    right(90);
+    forward(r);
+    pendown();
+    circle(r);
+    penup();
+    right(180);
+    forward(r);
+    right(90);
+    pendown();
+}
+
+define x_y (x) {
+    right(90);
+    forward(x * 2);
+    right(180);
+    forward(x);
+    right(90);
+    forward(x);
+    right(180);
+    forward(x * 2);
+    right(180);
+    forward(x);
+}
+
+
+define spiral(size, max) {
+    var i;
+    var j;
+    var newsize;
+
+    i := max / 1.02 / size;
+    j := 1;
+    newsize := size;
+    repeat (i) {
+        newsize := newsize * 1.02;
+        if (newsize < max) {
+            j := j + 1;
+        }
+    }
+        
+    repeat (j) {
+        repeat (3) {
+            forward(size/3);
+            right(5);
+        }
+        size := size * 1.02;
+    }
+}
+
+
+define main(r, s) {
+    var a := 18;
+    var b := 360 / a;
+
+    setcolor(250, 225, 200);
+    var r1;
+    repeat (10) {
+        r1 := r1 + r/5;
+        circle(r1);
+    }
+
+    setwidth(3);
+    setcolor(40, 40, 238);
+    repeat(a) {
+        right(b);
+        seg_circle(r, s);
+    }
+
+    right(45);
+    setwidth(3);
+    setcolor(238, 40, 40);
+    repeat(a) {
+        right(b);
+        circle1(r, s);
+    }
+    left(45);
+}
+
+main(130, 90);
+

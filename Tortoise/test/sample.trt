@@ -1,0 +1,27 @@
+define spiral(size) {
+    if (size < 30) {
+        forward(size);
+        right(15);
+        var newsize;
+        newsize := size * 1.02;
+        spiral(newsize);
+    }
+}
+
+define main(arg) {
+    var a;
+    var b;
+    a := 5;
+    b := a * (10 + a);
+    repeat(18) {
+        right(20);
+        repeat(36) {
+            forward(20);
+            right(10);
+        }
+    }
+
+    spiral(arg);
+}
+
+main(5);
