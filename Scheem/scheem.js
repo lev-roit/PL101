@@ -56,7 +56,7 @@ var evalScheem = function (expr, env) {
             env[expr[1]] = evalScheem(expr[2], env);
             return 0;
         case 'set!':
-            if (env[expr[1]] == undefined) {
+            if (env[expr[1]] === undefined) {
                 throw new Error("'" + expr[1] +"' is undefined");
             }
             else {
